@@ -17,15 +17,12 @@ export class ProductService {
   private httpReviewService = inject(ReviewService);
 
   constructor() {}
-
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.productsUrl).pipe(
-      tap(
-        () => console.log('Products fetched'),
-        catchError((err) => this.handleError(err))
-      )
-    );
-  }
+  readonly products$ = this.http.get<Product[]>(this.productsUrl).pipe(
+    tap(
+      () => console.log('Products fetched'),
+      catchError((err) => this.handleError(err))
+    )
+  );
 
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.productsUrl}/${id}`)
