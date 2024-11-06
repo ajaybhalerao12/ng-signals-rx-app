@@ -3,7 +3,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { Subscription, tap } from 'rxjs';
+import { catchError, EMPTY, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -25,9 +25,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedProductId: number = 0;
 
   ngOnInit(): void {
+    
     this.prouductSub = this.productService
       .getProducts()
-      .pipe(tap(() => console.log('Products retrieved in component')))
+      .pipe(
+        tap(() => console.log('Products retrieved in component')),
+        catchError((err) => {
+          this.errorMessage = err;
+          return EMPTY;})
+      )
       .subscribe((products: Product[]) => {
         this.products = products;
         console.log(this.products);
