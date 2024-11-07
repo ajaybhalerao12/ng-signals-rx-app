@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-cart-total',
@@ -9,10 +10,12 @@ import { Component } from '@angular/core';
   styleUrl: './cart-total.component.css'
 })
 export class CartTotalComponent {
-  cartItems = [];
 
-  subTotal = 100;
-  deliveryFee = 20;
-  tax = 10;
-  totalPrice = this.subTotal + this.deliveryFee + this.tax;
+  private cartSvc = inject(CartService);
+  cartItems = this.cartSvc.cartItems;
+
+  subTotal = this.cartSvc.subTotal;
+  deliveryFee = this.cartSvc.deliveryFee;
+  tax = this.cartSvc.tax;
+  totalPrice = this.cartSvc.totalPrice;
 }

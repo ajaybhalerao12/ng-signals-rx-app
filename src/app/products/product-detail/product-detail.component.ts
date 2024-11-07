@@ -7,11 +7,13 @@ import {
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { catchError, EMPTY, tap } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { CartService } from '../../cart/cart.service';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule,CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css',
 })
@@ -22,6 +24,8 @@ export class ProductDetailComponent{
 
   private productSvc = inject(ProductService);
 
+  private cartSvc= inject(CartService);
+
   readonly product$ = this.productSvc.product$
   .pipe(
     tap(() => console.log('Product fetched in component')),
@@ -31,5 +35,7 @@ export class ProductDetailComponent{
     })
   );
 
-  addToCart(product: Product) {}
+  addToCart(product: Product) {
+    this.cartSvc.addToCart(product);
+  }
 }

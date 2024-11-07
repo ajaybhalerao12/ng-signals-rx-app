@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { CommonModule } from '@angular/common';
 import { CartItem } from '../cart';
+import { CartService } from '../cart.service';
 
 @Component({
   selector: 'app-cart-list',
@@ -13,5 +14,7 @@ import { CartItem } from '../cart';
 export class CartListComponent {
   pageTitle = 'Cart';
 
-  cartItems: CartItem[] = [];
+  private cartSvc = inject(CartService);
+
+  cartItems = this.cartSvc.cartItems;
 }
