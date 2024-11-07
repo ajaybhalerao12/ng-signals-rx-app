@@ -17,7 +17,8 @@ export class ProductListComponent {
 
   private productService = inject(ProductService);
 
-  selectedProductId: number = 0;
+  // selectedProductId: number = 0;
+  selectedProduct$ = this.productService.productSelected$;
 
   readonly products$ = this.productService.products$.pipe(
     catchError((err) => {
@@ -27,6 +28,7 @@ export class ProductListComponent {
   );
 
   onSelected(productId: number): void {
-    this.selectedProductId = productId;
+    // this.selectedProductId = productId;
+    this.productService.productSelected(productId);
   }
 }

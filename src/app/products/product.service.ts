@@ -8,6 +8,7 @@ import {
   throwError,
   switchMap,
   shareReplay,
+  BehaviorSubject,
 } from 'rxjs';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -25,6 +26,9 @@ export class ProductService {
   private httpErrorService = inject(HttpErrorService);
   private httpReviewService = inject(ReviewService);
 
+  private productSelectedSubject = new BehaviorSubject<number | undefined>(undefined);
+  productSelected$ = this.productSelectedSubject.asObservable();
+
   constructor() {}
   readonly products$ = this.http.get<Product[]>(this.productsUrl).pipe(
     tap((p) => console.log(JSON.stringify(p))),
@@ -39,6 +43,10 @@ export class ProductService {
       tap((x) => console.log(x)),
       catchError((err) => this.handleError(err))
     );
+  }
+
+  productSelected(productId: number): void {
+    this.productSelectedSubject.next(productId);
   }
 
   getProductsWithReviews(product: Product): Observable<Product> {
