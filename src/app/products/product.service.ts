@@ -1,5 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { map, catchError, Observable, of, tap, throwError, switchMap } from 'rxjs';
+import {
+  map,
+  catchError,
+  Observable,
+  of,
+  tap,
+  throwError,
+  switchMap,
+  shareReplay,
+} from 'rxjs';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ProductData } from './product-data.ts';
@@ -18,34 +27,29 @@ export class ProductService {
 
   constructor() {}
   readonly products$ = this.http.get<Product[]>(this.productsUrl).pipe(
-    tap(
-      () => console.log('Products fetched'),
-      catchError((err) => this.handleError(err))
-    )
+    tap((p) => console.log(JSON.stringify(p))),
+    shareReplay(1),
+    catchError((err) => this.handleError(err))
   );
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.productsUrl}/${id}`)
-    .pipe(
+    return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
       tap(() => console.log('Product retrieved by id', id)),
-      switchMap((product:Product)=> this.getProductsWithReviews(product)),
-      tap(x=>console.log(x)),
+      switchMap((product: Product) => this.getProductsWithReviews(product)),
+      tap((x) => console.log(x)),
       catchError((err) => this.handleError(err))
-
     );
   }
 
-  getProductsWithReviews(product:Product): Observable<Product> {
-    if(product.hasReviews){
-      return this.http.get<Review[]>(this.httpReviewService.getReviewUrl(product.id))
-      .pipe(
-        map((reviews: Review[]) => ({...product, reviews} as Product))
-      )
-    }else{
+  getProductsWithReviews(product: Product): Observable<Product> {
+    if (product.hasReviews) {
+      return this.http
+        .get<Review[]>(this.httpReviewService.getReviewUrl(product.id))
+        .pipe(map((reviews: Review[]) => ({ ...product, reviews } as Product)));
+    } else {
       return of(product);
     }
   }
-
 
   private handleError(err: HttpErrorResponse): Observable<never> {
     var formattedError = this.httpErrorService.formatError(err);

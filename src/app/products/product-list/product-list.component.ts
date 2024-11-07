@@ -20,7 +20,6 @@ export class ProductListComponent {
   selectedProductId: number = 0;
 
   readonly products$ = this.productService.products$.pipe(
-    tap(() => console.log('Products retrieved in component')),
     catchError((err) => {
       this.errorMessage = err;
       return EMPTY;
