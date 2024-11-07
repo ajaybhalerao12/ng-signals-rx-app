@@ -9,6 +9,7 @@ import {
   switchMap,
   shareReplay,
   BehaviorSubject,
+  filter,
 } from 'rxjs';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -36,14 +37,27 @@ export class ProductService {
     catchError((err) => this.handleError(err))
   );
 
-  getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
-      tap(() => console.log('Product retrieved by id', id)),
-      switchMap((product: Product) => this.getProductsWithReviews(product)),
-      tap((x) => console.log(x)),
-      catchError((err) => this.handleError(err))
-    );
-  }
+  readonly product$ = this.productSelected$
+  .pipe(
+    filter(id=>id!=undefined),
+    switchMap(id=>{
+      return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
+        tap(() => console.log('Product retrieved by id', id)),
+        switchMap((product: Product) => this.getProductsWithReviews(product)),
+        tap((x) => console.log(x)),
+        catchError((err) => this.handleError(err))
+      );
+    })
+  );
+
+  // getProduct(id: number): Observable<Product> {
+  //   return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
+  //     tap(() => console.log('Product retrieved by id', id)),
+  //     switchMap((product: Product) => this.getProductsWithReviews(product)),
+  //     tap((x) => console.log(x)),
+  //     catchError((err) => this.handleError(err))
+  //   );
+  // }
 
   productSelected(productId: number): void {
     this.productSelectedSubject.next(productId);
