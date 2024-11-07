@@ -10,6 +10,7 @@ import {
   shareReplay,
   BehaviorSubject,
   filter,
+  combineLatest,
 } from 'rxjs';
 import { Product } from './product';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -27,7 +28,9 @@ export class ProductService {
   private httpErrorService = inject(HttpErrorService);
   private httpReviewService = inject(ReviewService);
 
-  private productSelectedSubject = new BehaviorSubject<number | undefined>(undefined);
+  private productSelectedSubject = new BehaviorSubject<number | undefined>(
+    undefined
+  );
   productSelected$ = this.productSelectedSubject.asObservable();
 
   constructor() {}
@@ -37,10 +40,9 @@ export class ProductService {
     catchError((err) => this.handleError(err))
   );
 
-  readonly product$ = this.productSelected$
-  .pipe(
-    filter(id=>id!=undefined),
-    switchMap(id=>{
+  readonly product2$ = this.productSelected$.pipe(
+    filter((id) => id != undefined),
+    switchMap((id) => {
       return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
         tap(() => console.log('Product retrieved by id', id)),
         switchMap((product: Product) => this.getProductsWithReviews(product)),
@@ -50,14 +52,15 @@ export class ProductService {
     })
   );
 
-  // getProduct(id: number): Observable<Product> {
-  //   return this.http.get<Product>(`${this.productsUrl}/${id}`).pipe(
-  //     tap(() => console.log('Product retrieved by id', id)),
-  //     switchMap((product: Product) => this.getProductsWithReviews(product)),
-  //     tap((x) => console.log(x)),
-  //     catchError((err) => this.handleError(err))
-  //   );
-  // }
+  product$ = combineLatest([this.productSelected$, this.products$]).pipe(
+    map(([selectedId, products]) =>
+      products.find((product: Product) => product.id === selectedId)
+    ),
+    filter((id) => id != undefined),
+    tap((x) => console.log(x)),
+    switchMap((product: Product) => this.getProductsWithReviews(product)),
+    catchError((err) => this.handleError(err))
+  );
 
   productSelected(productId: number): void {
     this.productSelectedSubject.next(productId);
@@ -76,6 +79,5 @@ export class ProductService {
   private handleError(err: HttpErrorResponse): Observable<never> {
     var formattedError = this.httpErrorService.formatError(err);
     return throwError(() => of(formattedError));
-    // return formattedError;
   }
 }
