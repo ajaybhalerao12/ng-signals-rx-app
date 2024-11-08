@@ -1,27 +1,59 @@
-# NgSignalsRxApp
+# ng-signals-rx-app
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
 
-## Development server
+## Overview
+This is an Angular application that demonstrates the use of signals and reactive extensions (RxJS) for managing state and handling asynchronous operations. The project showcases best practices for building modern, reactive Angular applications. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
+- Reactive state management using signals
+- Asynchronous data handling with RxJS
+- Modular and scalable architecture
+- Example components and services
 
-## Code scaffolding
+## Getting Started
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Prerequisites
+- Node.js and npm installed
+- Angular CLI installed
 
-## Build
+### Installation
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/ajaybhalerao12/ng-signals-rx-app.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd ng-reactive-forms-contacts-app
+    ```
+3. Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Running the Application
+1. Start the development server:
+    ```bash
+    ng serve
+    ```
+2. Open your browser and navigate to `http://localhost:4200`
 
-## Running unit tests
+### Building the Application
+To build the application for production, use the following command:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+ng build --prod
+```
+The build artifacts will be stored in the dist/ directory.
 
-## Running end-to-end tests
+### Usage
+This application serves as a reference for implementing reactive state management using signals and RxJS in Angular. You can explore the codebase to understand how various components and services interact and manage state.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
 
-## Further help
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Contact
+
+For any questions or suggestions, please contact [Ajay Bhalerao](https://github.com/ajaybhalerao12).

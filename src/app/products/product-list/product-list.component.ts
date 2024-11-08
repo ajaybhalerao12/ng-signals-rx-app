@@ -13,12 +13,12 @@ import { catchError, EMPTY, tap } from 'rxjs';
 })
 export class ProductListComponent {
   pageTitle = 'Products';
-  // errorMessage = '';
 
   private productService = inject(ProductService);
 
-  // selectedProductId: number = 0;
-  selectedProduct$ = this.productService.productSelected$;
+
+  // selectedProduct$ = this.productService.productSelected$;
+  selectedProductId = this.productService.selectedProductId;
 
   // readonly products$ = this.productService.products$.pipe(
   //   catchError((err) => {
