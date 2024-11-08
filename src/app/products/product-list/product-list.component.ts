@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductService } from '../product.service';
 import { catchError, EMPTY, tap } from 'rxjs';
@@ -13,7 +13,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
 })
 export class ProductListComponent {
   pageTitle = 'Products';
-  errorMessage = '';
+  // errorMessage = '';
 
   private productService = inject(ProductService);
 
@@ -26,7 +26,11 @@ export class ProductListComponent {
   //     return EMPTY;
   //   })
   // );
-  products = this.productService.products
+  products = this.productService.products;
+  errorMessage = this.productService.productsError;
+  e = effect(() => {
+    console.log('Error :',this.errorMessage());
+  });
 
   onSelected(productId: number): void {
     // this.selectedProductId = productId;
