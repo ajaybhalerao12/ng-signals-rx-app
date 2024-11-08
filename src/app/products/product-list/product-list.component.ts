@@ -20,12 +20,13 @@ export class ProductListComponent {
   // selectedProductId: number = 0;
   selectedProduct$ = this.productService.productSelected$;
 
-  readonly products$ = this.productService.products$.pipe(
-    catchError((err) => {
-      this.errorMessage = err;
-      return EMPTY;
-    })
-  );
+  // readonly products$ = this.productService.products$.pipe(
+  //   catchError((err) => {
+  //     this.errorMessage = err;
+  //     return EMPTY;
+  //   })
+  // );
+  products = this.productService.products
 
   onSelected(productId: number): void {
     // this.selectedProductId = productId;
