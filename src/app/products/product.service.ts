@@ -24,7 +24,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   providedIn: 'root',
 })
 export class ProductService {
-  private productsUrl = 'api/products2';
+  private productsUrl = 'api/products';
   private http = inject(HttpClient);
   private httpErrorService = inject(HttpErrorService);
   private httpReviewService = inject(ReviewService);
